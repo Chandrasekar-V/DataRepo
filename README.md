@@ -1,5 +1,5 @@
-# DataRepo
-Repo to commit all projects/files related to Data Science/Analysis/ETL
+# DataRepo/Data_Science
+Branch to commit all projects/files related to Data Science/Data Analysis/AI & ML
 
 Files:
 1. Missing Data Imputation code: 
