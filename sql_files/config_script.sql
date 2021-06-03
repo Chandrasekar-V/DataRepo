@@ -12,7 +12,7 @@ select * from pdb_19c;
 SELECT banner FROM v$version WHERE ROWNUM = 1;
 select * from dba_user_role where grantee = 'cric_batch_user';
 
-CREATE USER cric_batch_user IDENTIFIED BY "pwd";
+CREATE USER cric_batch_user IDENTIFIED BY "cric_b@tch_pwd";
 grant create session to cric_batch_user;
 alter user cric_batch_user quota unlimited on users;
 grant create any table to cric_batch_user;
