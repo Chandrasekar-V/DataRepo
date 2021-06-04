@@ -1,2 +1,25 @@
 Oracle:
 Bapr@1200064
+
+DB:
+Global database name: cricketdatagdb
+Pluggable database name: cricketdatapdb
+Password: Cricket_b@tch1
+
+Common user:
+c##scott, tiger
+
+Batch_user:
+cric_batch_user, cric_b@tch_pwd
+
+Oracle Enterprise Manager: https://localhost:5500/em/login. Use sys and admin password, container name not required.
+-------------------------------------------------------------
+Steps:
+1. SQL Developer - From https://www.oracle.com/tools/downloads/sqldev-downloads.html#sqldev-install-windows, download the Windows 64-bit with JDK 8 included ZIP file and extract it.
+2. Following steps from this youtube video https://www.youtube.com/watch?v=KDu_VF9xaGk, download oracle database from oracle website, elaborated below.
+3. From https://www.oracle.com/database/technologies/oracle-database-software-downloads.html, download Microsoft Windows x64 (64-bit) ZIP file and extract it.
+4. Run Setup.exe file and follow steps as per video. Oracle DB would be created.
+5. Open SQL Plus and connect as sysdba without pwd using command - '/' as sysdba
+6. Open SQL Developer and connect to PDB using sys user and admin password. Grant permissions to pdbadmin dba user. 
+7. Connect to PDB using pdbadmin user and admin password.
+8. Create all users, objects as required.
