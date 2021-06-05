@@ -74,4 +74,17 @@ partition by range (match_date) interval (NUMTOYMINTERVAL(1,'MONTH'))
 
 grant select, insert, update, delete on tgt_t20_dbo.matches to cric_batch_user;
 commit;
+truncate table tgt_t20_dbo.matches; 
 select * from tgt_t20_dbo.matches;
+-----------------------------------------------------------------------------------
+
+-- Create error logging table
+create table tgt_t20_dbo.error_log(
+match_id number,
+error_msg varchar2(1000),
+rec_upd_tmst timestamp default systimestamp,
+rec_upd_usr varchar2(50) default user);
+
+grant select, insert, update, delete on tgt_t20_dbo.error_log to cric_batch_user;
+commit;
+select * from tgt_t20_dbo.error_log;
