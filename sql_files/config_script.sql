@@ -14,6 +14,9 @@ alter user test_schema quota unlimited on users;
 create table test_schema.test_table (s_no number, p_name varchar2(50));
 grant select, insert, update, delete on test_schema.test_table to cric_batch_user;
 
+CREATE USER tgt_t20_dbo no authentication;
+alter user tgt_t20_dbo quota unlimited on users;
+
 -- Connect to PDB from cric_batch_user
 insert into test_schema.test_table select 1,'jayashree' from dual;
 insert into test_schema.test_table select 2,'chandrasekar' from dual;
@@ -21,7 +24,3 @@ commit;
 
 select * from user_users;
 select * from test_schema.test_table;
------------------------------------------------------
--- Creating tgt_dbo schema for table creation
-CREATE USER tgt_t20_dbo no authentication;
-alter user tgt_t20_dbo quota unlimited on users;

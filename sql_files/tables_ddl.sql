@@ -1,11 +1,13 @@
-drop table tgt_t20_dbo.matches;
+-- Login to PDB using pdbadmin
 
+-- Create Matches table in t20 schema
+drop table tgt_t20_dbo.matches;
 create table tgt_t20_dbo.matches(
 match_id number primary key,
 series_name varchar2(200),
 match_format varchar2(20),
 season varchar2(10),
-series_match_no number,
+series_match_no varchar2(100),
 match_date date,
 match_time varchar2(30),
 venue varchar2(200),
@@ -31,6 +33,7 @@ inns1_wides number,
 inns1_no_balls number,
 inns1_penalties number,
 inns2_team varchar2(100),
+inns2_target number,
 inns2_runs number,
 inns2_wkts number,
 inns2_overs number,
@@ -63,8 +66,8 @@ reserve_umpire_gender varchar2(10),
 match_referee_name varchar2(200),
 match_referee_country varchar2(50),
 match_referee_gender varchar2(10),
-rec_upd_tmst timestamp,
-rec_upd_usr varchar2(50)
+rec_upd_tmst timestamp default systimestamp,
+rec_upd_usr varchar2(50) default user
 )
 partition by range (match_date) interval (NUMTOYMINTERVAL(1,'MONTH'))
 (PARTITION def_part VALUES LESS THAN (TO_DATE('01-JAN-2018', 'DD-MON-YYYY')));
