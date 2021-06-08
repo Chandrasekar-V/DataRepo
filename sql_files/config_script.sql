@@ -17,6 +17,9 @@ grant select, insert, update, delete on test_schema.test_table to cric_batch_use
 CREATE USER tgt_t20_dbo no authentication;
 alter user tgt_t20_dbo quota unlimited on users;
 
+CREATE USER temp_tgt_dbo no authentication;
+alter user temp_tgt_dbo quota unlimited on users;
+
 -- Connect to PDB from cric_batch_user
 insert into test_schema.test_table select 1,'jayashree' from dual;
 insert into test_schema.test_table select 2,'chandrasekar' from dual;

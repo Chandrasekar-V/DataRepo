@@ -90,19 +90,35 @@ grant select, insert, update, delete on tgt_t20_dbo.error_log to cric_batch_user
 commit;
 truncate table tgt_t20_dbo.error_log;
 select * from tgt_t20_dbo.error_log;
+-----------------------------------------------------------------------------------
 
--- Manual deletes from error_log table to remove match_ids that have been loaded into target
-delete tgt_t20_dbo.error_log where match_id in (1257948,1257951);
-commit;
-delete TGT_T20_DBO.error_log where match_id in (1217738,1217740,1217741,1229824,1235832,1257404,1235829,1235830,1257405,1257406);
-commit;
-delete TGT_T20_DBO.error_log where match_id in (1215164,1215163,1217744,1217745,1217747,1229820,1229822,1229823,1217742,1192223,1192224);
-commit;
-delete TGT_T20_DBO.error_log where error_msg like '%NoneType%';
-commit;
-delete TGT_T20_DBO.error_log where match_id in (1187677,1257183);
-commit;
+-- Create temporary tgt table for PSL data
+create table temp_tgt_dbo.psl_data(
+match_id number,
+season varchar2(10),
+start_date date,
+venue varchar2(500),
+innings number,
+ball number,
+batting_team varchar2(50),
+bowling_team varchar2(50),
+striker varchar2(100),
+non_striker varchar2(100),
+bowler varchar2(100),
+runs_off_bat number,
+extras number,
+wides number,
+noballs number,
+byes number,
+legbyes number,
+penalty number,
+wicket_type varchar2(50),
+player_dismissed varchar2(100),
+other_wicket_type varchar2(50),
+other_player_dismissed varchar2(100));
 
-select * from tgt_t20_dbo.matches where extract(year from match_date) = '2018';--73 in DB and 83 in Cricinfo
-select * from tgt_t20_dbo.matches where extract(year from match_date) = '2019';--216 in DB and 319 in Cricinfo
-select * from tgt_t20_dbo.matches where extract(year from match_date) in ('2020','2021');-- 114 in DB and 166 in Cricinfo
+grant select, insert, update, delete on TEMP_TGT_DBO.PSL_DATA to cric_batch_user;
+commit;
+truncate table TEMP_TGT_DBO.PSL_DATA;
+select * from TEMP_TGT_DBO.PSL_DATA;
+select count(*) from TEMP_TGT_DBO.PSL_DATA;
