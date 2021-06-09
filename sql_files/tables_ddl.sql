@@ -117,6 +117,10 @@ player_dismissed varchar2(100),
 other_wicket_type varchar2(50),
 other_player_dismissed varchar2(100));
 
+alter table temp_tgt_dbo.psl_data add total_ball_runs number;
+update temp_tgt_dbo.psl_data set total_ball_runs = RUNS_OFF_BAT + EXTRAS;
+commit;
+
 grant select, insert, update, delete on TEMP_TGT_DBO.PSL_DATA to cric_batch_user;
 commit;
 truncate table TEMP_TGT_DBO.PSL_DATA;
