@@ -7,7 +7,7 @@ select team_name,count(*) from
 unpivot (
 team_name for team in 
 (team_1 as 'team', team_2 as 'team')
-)) mat where gender='male' and tournament='International' group by team_name order by team_name; 
+)) mat where gender='male' and tournament='International' and match_type='T20' /*and extract(year from match_date)>=2018*/ group by team_name order by count(*) desc; 
 
 select * from
 (select * from temp_tgt_dbo.matches 
