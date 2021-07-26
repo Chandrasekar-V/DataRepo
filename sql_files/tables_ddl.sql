@@ -52,6 +52,7 @@ Toss_Winner varchar2(100),
 Toss_decision varchar2(100),
 Player_of_Match varchar2(200),
 Player_of_Match_team varchar2(100),
+Player_of_Series varchar2(100),
 umpire1_name varchar2(200),
 umpire1_country varchar2(50),
 umpire1_gender varchar2(10),
@@ -76,6 +77,8 @@ partition by range (match_date) interval (NUMTOYMINTERVAL(1,'MONTH'))
 grant select, insert, update, delete on tgt_t20_dbo.matches to cric_batch_user;
 commit;
 truncate table tgt_t20_dbo.matches; 
+
+alter table tgt_t20_dbo.matches add Player_of_Series varchar2(100);
 --------------------------------------------------------------------------------------------------------------------
 -- Create error logging table in tgt schema
 create table tgt_t20_dbo.error_log(
@@ -116,6 +119,7 @@ create table tgt_t20_dbo.batting_scorecard(
 match_id number,
 innings number,
 team varchar2(100),
+batter_position number,
 batter_id number,
 batter_name varchar2(200),
 is_batted varchar2(10),
@@ -137,10 +141,88 @@ fow_wicket_num number,
 fow_runs number,
 fow_overs number,
 rec_upd_tmst timestamp default systimestamp,
-rec_upd_usr varchar2(50) default user
+rec_upd_usr varchar2(50) default user,
+foreign key (match_id) references tgt_t20_dbo.matches(match_id),
+foreign key (batter_id) references tgt_t20_dbo.players(player_id)
 );
 
 grant select, insert, update, delete on tgt_t20_dbo.batting_scorecard to cric_batch_user;
 commit;
 truncate table tgt_t20_dbo.batting_scorecard;
------------------------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------------------------------
+-- Create bowling_scorecard table in tgt schema
+drop table tgt_t20_dbo.bowling_scorecard;
+create table tgt_t20_dbo.bowling_scorecard(
+match_id number,
+innings number,
+team varchar2(100),
+bowler_position number,
+bowler_id number,
+bowler_name varchar2(200),
+overs number,
+maidens number,
+runs_conceded number,
+wickets number,
+economy number,
+dots number,
+fours number,
+sixes number,
+wides number,
+noballs number,
+rec_upd_tmst timestamp default systimestamp,
+rec_upd_usr varchar2(50) default user,
+foreign key (match_id) references tgt_t20_dbo.matches(match_id),
+foreign key (bowler_id) references tgt_t20_dbo.players(player_id)
+);
+
+grant select, insert, update, delete on tgt_t20_dbo.bowling_scorecard to cric_batch_user;
+commit;
+truncate table tgt_t20_dbo.bowling_scorecard;
+---------------------------------------------------------------------------------------------------------------------------
+-- Create partnerships table in tgt schema
+drop table tgt_t20_dbo.partnerships;
+create table tgt_t20_dbo.partnerships(
+match_id number,
+innings number,
+team varchar2(100),
+partnership_wicket number,
+runs number,
+balls number,
+player1_id number,
+player1_objid number,
+player1_name varchar2(200),
+player2_id number,
+player2_objid number,
+player2_name varchar2(200),
+outPlayerId number,
+player1Runs number,
+player1Balls number,
+player2Runs number,
+player2Balls number,
+rec_upd_tmst timestamp default systimestamp,
+rec_upd_usr varchar2(50) default user,
+foreign key (match_id) references tgt_t20_dbo.matches(match_id),
+foreign key (player1_objid) references tgt_t20_dbo.players(player_id),
+foreign key (player2_objid) references tgt_t20_dbo.players(player_id)
+);
+
+grant select, insert, update, delete on tgt_t20_dbo.partnerships to cric_batch_user;
+commit;
+truncate table tgt_t20_dbo.partnerships;
+----------------------------------------------------------------------------------------------------------------------------
+-- Create debutants table in tgt schema
+drop table tgt_t20_dbo.debutants;
+create table tgt_t20_dbo.debutants(
+match_id number,
+team varchar2(100),
+player_id number,
+player_name varchar2(200),
+rec_upd_tmst timestamp default systimestamp,
+rec_upd_usr varchar2(50) default user,
+foreign key (match_id) references tgt_t20_dbo.matches(match_id),
+foreign key (player_id) references tgt_t20_dbo.players(player_id)
+);
+
+grant select, insert, update, delete on tgt_t20_dbo.debutants to cric_batch_user;
+commit;
+truncate table tgt_t20_dbo.debutants;
