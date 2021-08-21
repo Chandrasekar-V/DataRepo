@@ -1,7 +1,6 @@
 -- Login to PDB using pdbadmin
 
 -- Create Matches table in t20 schema
-drop table tgt_t20_dbo.matches;
 create table tgt_t20_dbo.matches(
 match_id number primary key,
 series_name varchar2(200),
@@ -76,7 +75,6 @@ partition by range (match_date) interval (NUMTOYMINTERVAL(1,'MONTH'))
 
 grant select, insert, update, delete on tgt_t20_dbo.matches to cric_batch_user;
 commit;
-truncate table tgt_t20_dbo.matches; 
 
 alter table tgt_t20_dbo.matches add Player_of_Series varchar2(100);
 --------------------------------------------------------------------------------------------------------------------
@@ -89,10 +87,8 @@ rec_upd_usr varchar2(50) default user);
 
 grant select, insert, update, delete on tgt_t20_dbo.error_log to cric_batch_user;
 commit;
-truncate table tgt_t20_dbo.error_log;
 ------------------------------------------------------------------------------------------------------------------
 -- Create players table in tgt schema
-drop table tgt_t20_dbo.players;
 create table tgt_t20_dbo.players(
 player_id number primary key,
 player_name varchar2(200),
@@ -111,10 +107,8 @@ rec_upd_usr varchar2(50) default user);
 
 grant select, insert, update, delete on tgt_t20_dbo.players to cric_batch_user;
 commit;
-truncate table tgt_t20_dbo.players;
 ---------------------------------------------------------------------------------------------------------------
 -- Create batting_scorecard table in tgt schema
-drop table tgt_t20_dbo.batting_scorecard;
 create table tgt_t20_dbo.batting_scorecard(
 match_id number,
 innings number,
@@ -148,10 +142,8 @@ foreign key (batter_id) references tgt_t20_dbo.players(player_id)
 
 grant select, insert, update, delete on tgt_t20_dbo.batting_scorecard to cric_batch_user;
 commit;
-truncate table tgt_t20_dbo.batting_scorecard;
 --------------------------------------------------------------------------------------------------------------------------
 -- Create bowling_scorecard table in tgt schema
-drop table tgt_t20_dbo.bowling_scorecard;
 create table tgt_t20_dbo.bowling_scorecard(
 match_id number,
 innings number,
@@ -177,10 +169,8 @@ foreign key (bowler_id) references tgt_t20_dbo.players(player_id)
 
 grant select, insert, update, delete on tgt_t20_dbo.bowling_scorecard to cric_batch_user;
 commit;
-truncate table tgt_t20_dbo.bowling_scorecard;
 ---------------------------------------------------------------------------------------------------------------------------
 -- Create partnerships table in tgt schema
-drop table tgt_t20_dbo.partnerships;
 create table tgt_t20_dbo.partnerships(
 match_id number,
 innings number,
@@ -208,10 +198,8 @@ foreign key (player2_objid) references tgt_t20_dbo.players(player_id)
 
 grant select, insert, update, delete on tgt_t20_dbo.partnerships to cric_batch_user;
 commit;
-truncate table tgt_t20_dbo.partnerships;
 ----------------------------------------------------------------------------------------------------------------------------
 -- Create debutants table in tgt schema
-drop table tgt_t20_dbo.debutants;
 create table tgt_t20_dbo.debutants(
 match_id number,
 team varchar2(100),
@@ -225,4 +213,72 @@ foreign key (player_id) references tgt_t20_dbo.players(player_id)
 
 grant select, insert, update, delete on tgt_t20_dbo.debutants to cric_batch_user;
 commit;
-truncate table tgt_t20_dbo.debutants;
+-------------------------------------------------------------------------------------------------------------------------
+-- Create ball-by-ball table in tgt schema
+create table tgt_t20_dbo.bbb_data(
+match_id number,
+inns number,
+batting_team varchar2(100),
+bowling_team varchar2(100),
+over_number number,
+ball_number number,
+iswide varchar2(10),
+isNoball varchar2(10),
+isRetiredHurt varchar2(10),
+isBoundary varchar2(10),
+total_ball_runs number,
+batter_runs number,
+wide_runs number,
+no_ball_runs number,
+bye_legbye_runs number,
+total_extras_runs number,
+striker_batter_id number,
+striker_batter_name varchar2(200),
+striker_batter_inns_runs number,
+striker_batter_inns_balls number,
+non_striker_batter_id number,
+non_striker_batter_name varchar2(200),
+non_striker_batter_inns_runs number,
+non_striker_batter_inns_balls number,
+current_bowler_id number,
+current_bowler_name varchar2(200),
+current_bowler_overs number,
+current_bowler_maidens number,
+current_bowler_runs number,
+current_bowler_wickets number,
+partner_bowler_id number,
+partner_bowler_name varchar2(200),
+partner_bowler_overs number,
+partner_bowler_maidens number,
+partner_bowler_runs number,
+partner_bowler_wickets number,
+current_inns_runs number,
+current_inns_balls number,
+current_inns_wickets number,
+is_maiden_over varchar2(10),
+over_runs number,
+over_wickets number,
+run_rate number,
+reqd_run_rate number,
+remaining_balls number,
+remaining_runs number,
+is_wicket number,
+dismissed_batter_id number,
+dismissed_batter_name varchar2(200),
+is_bowler_wicket number,
+foreign key (match_id) references tgt_t20_dbo.matches(match_id),
+foreign key (striker_batter_id) references tgt_t20_dbo.players(player_id),
+foreign key (non_striker_batter_id) references tgt_t20_dbo.players(player_id),
+foreign key (current_bowler_id) references tgt_t20_dbo.players(player_id),
+foreign key (partner_bowler_id) references tgt_t20_dbo.players(player_id),
+foreign key (dismissed_batter_id) references tgt_t20_dbo.players(player_id)
+);
+
+alter table tgt_t20_dbo.bbb_data disable constraint SYS_C007713;
+alter table tgt_t20_dbo.bbb_data disable constraint SYS_C007714;
+alter table tgt_t20_dbo.bbb_data disable constraint SYS_C007715;
+alter table tgt_t20_dbo.bbb_data disable constraint SYS_C007716;
+alter table tgt_t20_dbo.bbb_data disable constraint SYS_C007717;
+
+grant select, insert, update, delete on tgt_t20_dbo.bbb_data to cric_batch_user;
+commit;
