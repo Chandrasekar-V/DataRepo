@@ -38,6 +38,9 @@ select distinct match_id from tgt_t20_dbo.bbb_data
 );
 commit;
 
+delete tgt_t20_dbo.error_log where match_id in (1147733);
+commit;
+
 /*merge into tgt_t20_dbo.bbb_data bbb using (select match_id, inns1_team, inns2_team from tgt_t20_dbo.matches) mat on (bbb.match_id = mat.match_id)
 when matched then update set bbb.BATTING_TEAM = CASE WHEN INNS = 1 THEN mat.inns1_team ELSE mat.inns2_team END,
                              bbb.BOWLING_TEAM = CASE WHEN INNS = 1 THEN mat.inns2_team ELSE mat.inns1_team END;
