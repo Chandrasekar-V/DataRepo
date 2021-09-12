@@ -362,3 +362,24 @@ select striker_batter_name,runs,balls,wickets,trunc(balls/wickets,2) dismissal_r
     (select striker_batter_name,sum(BATTER_RUNS) runs,sum(case when iswide = '0' then 1 else 0 end) balls, sum(is_wicket) wickets from 
     tgt_t20_dbo.bbb_data bbb where match_id in (select match_id from tgt_t20_dbo.matches where series_name like '%Caribbean%' and season in ('2020')) 
     and over_number between 1 and 6 group by striker_batter_name);
+-------------------------------------------------------------------------------------------------------------------------------------------
+
+-- Match 19: JT v TKR
+select current_bowler_name,matches,runs,balls,wickets,trunc(balls/wickets,2) dismissal_rate, trunc((runs/balls)*6,2) econoomy_rate from
+    (select current_bowler_name, count(distinct match_id) matches, sum(BATTER_RUNS+WIDE_RUNS+NO_BALL_RUNS) runs,sum(case when iswide = '0' and isnoball = '0' then 1 else 0 end) balls, sum(is_wicket) wickets from 
+    tgt_t20_dbo.bbb_data bbb where match_id in (select match_id from tgt_t20_dbo.matches where series_name like '%Caribbean%' and season in ('2020')) and over_number between 1 and 6
+    group by current_bowler_name)
+where balls>=25 order by dismissal_rate;
+-- ALi Khan exceptional in PP last year
+
+select batting_team,runs,balls,wickets,trunc(balls/wickets,2) dismissal_rate, trunc((runs/balls)*6,2) run_rate from
+    (select batting_team, sum(total_ball_runs) runs,sum(case when iswide = '0' and isnoball = '0' then 1 else 0 end) balls, sum(is_wicket) wickets from tgt_t20_dbo.bbb_data where match_id in (select match_id from 
+    tgt_t20_dbo.matches where series_name like '%Caribbean%' and season in ('2020','2021')) and over_number between 16 and 20 group by batting_team)
+order by run_rate desc; 
+-- TKR have best death overs batting RR since last season
+
+select striker_batter_name,runs,balls,wickets,trunc(balls/wickets,2) dismissal_rate, trunc((runs/balls)*100,2) strike_rate, trunc(runs/wickets,2) average from
+    (select striker_batter_name,sum(BATTER_RUNS) runs,sum(case when iswide = '0' then 1 else 0 end) balls, sum(is_wicket) wickets from 
+    tgt_t20_dbo.bbb_data bbb where match_id in (select match_id from tgt_t20_dbo.matches where series_name like '%Caribbean%' and season in ('2021')) and batting_team like '%Trinbago%' 
+    and over_number between 16 and 20 group by striker_batter_name)
+order by strike_rate desc;
